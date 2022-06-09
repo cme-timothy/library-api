@@ -7,7 +7,17 @@ const getAllBooks = (req, res) => {
 };
 
 const getOneBook = (req, res) => {
-  res.send();
+  const items = req.url.split("/");
+  const foundBook = model.books.find((book) => book.id === items[2]);
+  if (foundBook) {
+    const getBook = model.books.filter((book) => book.id === items[2]);
+    res.statusMessage = "GET request for book succeeded";
+    res.status(200).json(getBook);
+  } else {
+    res.statusMessage =
+      "GET request for book failed, the server can not find the requested resource";
+    res.status(404).end();
+  }
 };
 
 const addBook = (req, res) => {
