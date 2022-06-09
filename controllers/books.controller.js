@@ -48,11 +48,60 @@ const addBook = (req, res) => {
 };
 
 const changeBook = (req, res) => {
-  res.send();
+  const title = typeof req.body.title;
+  const author = typeof req.body.author;
+  const summary = typeof req.body.summary;
+  const objectLength = Object.keys(req.body).length;
+  const items = req.url.split("/");
+  const foundBook = model.books.find((book) => book.id === items[2]);
+  if (
+    foundBook &&
+    title === "string" &&
+    author === "string" &&
+    summary === "string" &&
+    objectLength === 3
+  ) {
+    const bookIndex = model.books.findIndex((book) => book.id === items[2]);
+    model.books[bookIndex] = {
+      id: items[2],
+      title: req.body.title,
+      author: req.body.author,
+      summary: req.body.summary,
+    };
+    res.statusMessage =
+      "PUT request for book succeeded, and is updated on the server";
+    res.status(204).end();
+  } else if (foundBook) {
+    res.statusMessage =
+      "PUT request for book failed, something wrong with the data sent";
+    res.status(400).end();
+  } else {
+    res.statusMessage =
+      "PUT request for book failed, the server can not find the requested resource";
+    res.status(404).end();
+  }
 };
 
 const changeBookSummary = (req, res) => {
-  res.send();
+  const summary = typeof req.body.summary;
+  const objectLength = Object.keys(req.body).length;
+  const items = req.url.split("/");
+  const foundBook = model.books.find((book) => book.id === items[2]);
+  if (foundBook && summary === "string" && objectLength === 1) {
+    const bookIndex = model.books.findIndex((book) => book.id === items[2]);
+    model.books[bookIndex].summary = req.body.summary;
+    res.statusMessage =
+      "PATCH request for book succeeded, and is updated on the server";
+    res.status(204).end();
+  } else if (foundBook) {
+    res.statusMessage =
+      "PATCH request for book failed, something wrong with the data sent";
+    res.status(400).end();
+  } else {
+    res.statusMessage =
+      "PATCH request for book failed, the server can not find the requested resource";
+    res.status(404).end();
+  }
 };
 
 const deleteBook = (req, res) => {
