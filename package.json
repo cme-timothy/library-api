@@ -1,0 +1,15 @@
+{
+  "name": "library-api",
+  "version": "1.0.0",
+  "description": "This is a simple library API for my second node.js web server assignment.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
