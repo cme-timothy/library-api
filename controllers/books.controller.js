@@ -1,18 +1,19 @@
 const uuid = require("uuid");
 const model = require("../models/books.model");
 
-const getAllBooks = (req, res) => {
+const getAllBooks = async (req, res) => {
+  const result = await model.getAll();
   res.statusMessage = "GET request for all books succeeded";
-  res.status(200).json(model.books);
+  res.status(200).json(result);
 };
 
-const getOneBook = (req, res) => {
+const getOneBook = async (req, res) => {
   const items = req.url.split("/");
-  const foundBook = model.books.find((book) => book.id === items[2]);
-  if (foundBook) {
-    const getBook = model.books.filter((book) => book.id === items[2]);
+  const result = await model.getOne(items[2]);
+  console.log(result);
+  if (result.length === 1) {
     res.statusMessage = "GET request for book succeeded";
-    res.status(200).json(getBook);
+    res.status(200).json(result);
   } else {
     res.statusMessage =
       "GET request for book failed, the server can not find the requested resource";
