@@ -19,7 +19,7 @@ function getOne(id) {
   const sql = "SELECT * FROM library WHERE id = ?";
 
   return new Promise((resolve, reject) => {
-    db.all(sql, id, (error, rows) => {
+    db.get(sql, id, (error, rows) => {
       if (error) {
         console.error(error.message);
         reject(error);
@@ -33,12 +33,12 @@ function add(title, author, summary) {
   const sql = `INSERT INTO library (title, author, summary) VALUES (?, ?, ?)`;
 
   return new Promise((resolve, reject) => {
-    db.all(sql, title, author, summary, (error, rows) => {
+    db.run(sql, [title, author, summary], (error) => {
       if (error) {
         console.error(error.message);
         reject(error);
       }
-      resolve(rows);
+      resolve();
     });
   });
 }

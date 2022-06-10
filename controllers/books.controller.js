@@ -10,7 +10,7 @@ const getAllBooks = async (req, res) => {
 const getOneBook = async (req, res) => {
   const items = req.url.split("/");
   const result = await model.getOne(items[2]);
-  if (result.length === 1) {
+  if (result) {
     res.statusMessage = "GET request for book succeeded";
     res.status(200).json(result);
   } else {
