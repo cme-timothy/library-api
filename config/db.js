@@ -15,12 +15,8 @@ const db = new sqlite3.Database("./db.sqlite", (error) => {
     `;
   db.run(libraryStmt, (error) => {
     if (error) {
-      //console.error(error.message);
+      console.error(error.message);
       //throw error;
-    } else {
-      const insert =
-        "INSERT INTO library (title, author, summary) VALUES (?, ?, ?)";
-      db.run(insert, ["test", "test", "test"]);
     }
   });
 });

@@ -16,10 +16,10 @@ function getAll() {
 }
 
 function getOne(id) {
-  const sql = `SELECT * FROM library WHERE id=${id}`;
+  const sql = "SELECT * FROM library WHERE id = ?";
 
   return new Promise((resolve, reject) => {
-    db.all(sql, (error, rows) => {
+    db.all(sql, id, (error, rows) => {
       if (error) {
         console.error(error.message);
         reject(error);
@@ -29,4 +29,18 @@ function getOne(id) {
   });
 }
 
-module.exports = { books, getAll, getOne };
+function add(title, author, summary) {
+  const sql = `INSERT INTO library (title, author, summary) VALUES (?, ?, ?)`;
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, title, author, summary, (error, rows) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+module.exports = { books, getAll, getOne, add };

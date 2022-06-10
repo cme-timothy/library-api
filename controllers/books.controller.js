@@ -10,7 +10,6 @@ const getAllBooks = async (req, res) => {
 const getOneBook = async (req, res) => {
   const items = req.url.split("/");
   const result = await model.getOne(items[2]);
-  console.log(result);
   if (result.length === 1) {
     res.statusMessage = "GET request for book succeeded";
     res.status(200).json(result);
@@ -21,7 +20,7 @@ const getOneBook = async (req, res) => {
   }
 };
 
-const addBook = (req, res) => {
+const addBook = async (req, res) => {
   const title = typeof req.body.title;
   const author = typeof req.body.author;
   const summary = typeof req.body.summary;
@@ -32,12 +31,7 @@ const addBook = (req, res) => {
     summary === "string" &&
     objectLength === 3
   ) {
-    model.books.push({
-      id: uuid.v4(),
-      title: req.body.title,
-      author: req.body.author,
-      summary: req.body.summary,
-    });
+    await model.add(req.body.title, req.body.author, req.body.summary);
     res.statusMessage =
       "POST request for book succeeded, and is added to the server";
     res.status(201).end();
