@@ -1,4 +1,4 @@
-# To-do list API
+# Library API
 
 This is a simple library API for my second node.js web server assignment.
 
