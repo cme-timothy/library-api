@@ -96,8 +96,8 @@ fetch('http://localhost:4000/books/:id',{
             body:JSON.stringify(
                 {
                     title: 'book name',
-                    author: "authors name"
-                    summary: "brief summary"
+                    author: 'authors name'
+                    summary: 'brief summary'
                 }
             )
         })
@@ -112,7 +112,7 @@ fetch('http://localhost:4000/books/:id',{
             method:"PATCH",
             body:JSON.stringify(
                 {
-                    summary: "brief summary"
+                    summary: 'brief summary'
                 }
             )
         })
