@@ -42,13 +42,13 @@ const addBook = async (req, res) => {
   }
 };
 
-const changeBook = (req, res) => {
+const changeBook = async (req, res) => {
   const title = typeof req.body.title;
   const author = typeof req.body.author;
   const summary = typeof req.body.summary;
   const objectLength = Object.keys(req.body).length;
   const items = req.url.split("/");
-  const foundBook = model.books.find((book) => book.id === items[2]);
+  const foundBook = await model.getOne(items[2]);
   if (
     foundBook &&
     title === "string" &&
@@ -56,13 +56,12 @@ const changeBook = (req, res) => {
     summary === "string" &&
     objectLength === 3
   ) {
-    const bookIndex = model.books.findIndex((book) => book.id === items[2]);
-    model.books[bookIndex] = {
-      id: items[2],
-      title: req.body.title,
-      author: req.body.author,
-      summary: req.body.summary,
-    };
+    await model.changeAllValues(
+      req.body.title,
+      req.body.author,
+      req.body.summary,
+      items[2]
+    );
     res.statusMessage =
       "PUT request for book succeeded, and is updated on the server";
     res.status(204).end();
@@ -77,14 +76,13 @@ const changeBook = (req, res) => {
   }
 };
 
-const changeBookSummary = (req, res) => {
+const changeBookSummary = async (req, res) => {
   const summary = typeof req.body.summary;
   const objectLength = Object.keys(req.body).length;
   const items = req.url.split("/");
-  const foundBook = model.books.find((book) => book.id === items[2]);
+  const foundBook = await model.getOne(items[2]);
   if (foundBook && summary === "string" && objectLength === 1) {
-    const bookIndex = model.books.findIndex((book) => book.id === items[2]);
-    model.books[bookIndex].summary = req.body.summary;
+    await model.changeSummary(req.body.summary, items[2]);
     res.statusMessage =
       "PATCH request for book succeeded, and is updated on the server";
     res.status(204).end();

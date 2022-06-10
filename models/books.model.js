@@ -1,5 +1,4 @@
 const db = require("../config/db");
-const books = [];
 
 function getAll() {
   const sql = "SELECT * FROM library";
@@ -30,7 +29,7 @@ function getOne(id) {
 }
 
 function add(title, author, summary) {
-  const sql = `INSERT INTO library (title, author, summary) VALUES (?, ?, ?)`;
+  const sql = "INSERT INTO library (title, author, summary) VALUES (?, ?, ?)";
 
   return new Promise((resolve, reject) => {
     db.run(sql, [title, author, summary], (error) => {
@@ -43,4 +42,33 @@ function add(title, author, summary) {
   });
 }
 
-module.exports = { books, getAll, getOne, add };
+function changeAllValues(title, author, summary, id) {
+  const sql =
+    "UPDATE library SET title = ?, author = ?, summary = ? WHERE id = ?";
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, title, author, summary, id, (error) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve();
+    });
+  });
+}
+
+function changeSummary(summary, id) {
+  const sql = "UPDATE library SET summary = ? WHERE id = ?";
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, summary, id, (error) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve();
+    });
+  });
+}
+
+module.exports = { getAll, getOne, add, changeAllValues, changeSummary };
