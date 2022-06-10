@@ -71,4 +71,25 @@ function changeSummary(summary, id) {
   });
 }
 
-module.exports = { getAll, getOne, add, changeAllValues, changeSummary };
+function deleteOne(id) {
+  const sql = "DELETE FROM library WHERE id = ?";
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, id, (error) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve();
+    });
+  });
+}
+
+module.exports = {
+  getAll,
+  getOne,
+  add,
+  changeAllValues,
+  changeSummary,
+  deleteOne,
+};

@@ -1,4 +1,3 @@
-const uuid = require("uuid");
 const model = require("../models/books.model");
 
 const getAllBooks = async (req, res) => {
@@ -97,11 +96,11 @@ const changeBookSummary = async (req, res) => {
   }
 };
 
-const deleteBook = (req, res) => {
+const deleteBook = async (req, res) => {
   const items = req.url.split("/");
-  const foundBook = model.books.find((book) => book.id === items[2]);
+  const foundBook = await model.getOne(items[2]);
   if (foundBook) {
-    model.books = model.books.filter((book) => book.id !== items[2]);
+    await model.deleteOne(items[2]);
     res.statusMessage =
       "DELETE request for book succeeded, and is deleted from the server";
     res.status(204).end();
