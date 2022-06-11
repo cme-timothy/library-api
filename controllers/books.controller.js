@@ -30,10 +30,18 @@ const addBook = async (req, res) => {
     summary === "string" &&
     objectLength === 3
   ) {
-    await model.add(req.body.title, req.body.author, req.body.summary);
-    res.statusMessage =
-      "POST request for book succeeded, and is added to the server";
-    res.status(201).end();
+    const items = req.url.split("/");
+    const foundbook = await model.alreadyExists(req.body.title);
+    if (!foundbook) {
+      await model.add(req.body.title, req.body.author, req.body.summary);
+      res.statusMessage =
+        "POST request for book succeeded, and is added to the server";
+      res.status(201).end();
+    } else {
+      res.statusMessage =
+        "POST request for book failed, the book already exists on the server";
+      res.status(409).end();
+    }
   } else {
     res.statusMessage =
       "POST request for book failed, something wrong with the data sent";

@@ -28,6 +28,20 @@ function getOne(id) {
   });
 }
 
+function alreadyExists(title) {
+  const sql = "SELECT * FROM library WHERE title = ?";
+
+  return new Promise((resolve, reject) => {
+    db.get(sql, title, (error, rows) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve(rows);
+    });
+  });
+}
+
 function add(title, author, summary) {
   const sql = "INSERT INTO library (title, author, summary) VALUES (?, ?, ?)";
 
@@ -88,6 +102,7 @@ function deleteOne(id) {
 module.exports = {
   getAll,
   getOne,
+  alreadyExists,
   add,
   changeAllValues,
   changeSummary,
