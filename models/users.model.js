@@ -28,4 +28,18 @@ function getUser(email) {
   });
 }
 
-module.exports = { registerUser, getUser };
+function lend(email, bookId) {
+  const sql = "INSERT INTO lentOut (email, bookId) VALUES (?, ?)";
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, [email, bookId], (error) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve();
+    });
+  });
+}
+
+module.exports = { registerUser, getUser, lend };

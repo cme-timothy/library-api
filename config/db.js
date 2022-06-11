@@ -13,6 +13,13 @@ const db = new sqlite3.Database("db.sqlite", (error) => {
         summary TEXT
     )
     `;
+  const lentOutStmt = `
+    CREATE TABLE lentOut (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT,
+        bookId INTEGER
+    )
+    `;
   const usersStmt = `
     CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,6 +29,11 @@ const db = new sqlite3.Database("db.sqlite", (error) => {
     )
     `;
   db.run(libraryStmt, (error) => {
+    if (error) {
+      console.error(error.message);
+    }
+  });
+  db.run(lentOutStmt, (error) => {
     if (error) {
       console.error(error.message);
     }

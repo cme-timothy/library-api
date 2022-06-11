@@ -3,6 +3,7 @@ const md5 = require("md5");
 const jwt = require("jsonwebtoken");
 
 const model = require("../models/users.model");
+const modelBooks = require("../models/books.model");
 
 const register = async (req, res) => {
   const username = typeof req.body.username;
@@ -71,7 +72,26 @@ const login = async (req, res) => {
   }
 };
 
-const lendBook = async (req, res) => {};
+const lendBook = async (req, res) => {
+  const id = typeof req.body.id;
+  const objectLength = Object.keys(req.body).length;
+  if (id === "number" && objectLength === 1) {
+    const foundBook = await modelBooks.getOne(req.body.id);
+    if (!foundBook) {
+      res.statusMessage =
+        "POST request to loan book failed, the server can not find the book";
+      res.status(404).end();
+    } else {
+      await model.lend(req.user.email, req.body.id);
+      res.statusMessage = "POST request to loan book succeeded";
+      res.status(200).end();
+    }
+  } else {
+    res.statusMessage =
+      "POST request to login a user failed, something wrong with the data sent";
+    res.status(400).end();
+  }
+};
 
 const returnBook = async (req, res) => {};
 
