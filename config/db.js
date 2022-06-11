@@ -13,7 +13,21 @@ const db = new sqlite3.Database("db.sqlite", (error) => {
         summary TEXT
     )
     `;
+  const usersStmt = `
+    CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT,
+        email TEXT UNIQUE,
+        password TEXT
+    )
+    `;
   db.run(libraryStmt, (error) => {
+    if (error) {
+      console.error(error.message);
+      //throw error;
+    }
+  });
+  db.run(usersStmt, (error) => {
     if (error) {
       console.error(error.message);
       //throw error;
