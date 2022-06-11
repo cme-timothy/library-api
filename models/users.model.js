@@ -14,4 +14,18 @@ function registerUser(username, email, password) {
   });
 }
 
-module.exports = { registerUser };
+function getUser(email) {
+    const sql = "SELECT * FROM users WHERE email = ?";
+  
+    return new Promise((resolve, reject) => {
+      db.get(sql, email, (error, rows) => {
+        if (error) {
+          console.error(error.message);
+          reject(error);
+        }
+        resolve(rows);
+      });
+    });
+  }
+
+module.exports = { registerUser, getUser };
