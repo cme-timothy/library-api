@@ -24,13 +24,11 @@ const db = new sqlite3.Database("db.sqlite", (error) => {
   db.run(libraryStmt, (error) => {
     if (error) {
       console.error(error.message);
-      //throw error;
     }
   });
   db.run(usersStmt, (error) => {
     if (error) {
       console.error(error.message);
-      //throw error;
     }
   });
 });
