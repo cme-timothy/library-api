@@ -30,7 +30,6 @@ const addBook = async (req, res) => {
     summary === "string" &&
     objectLength === 3
   ) {
-    const items = req.url.split("/");
     const foundbook = await model.alreadyExists(req.body.title);
     if (!foundbook) {
       await model.add(req.body.title, req.body.author, req.body.summary);
