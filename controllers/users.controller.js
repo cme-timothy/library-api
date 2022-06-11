@@ -1,6 +1,7 @@
 require("dotenv").config();
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
+
 const model = require("../models/users.model");
 
 const register = async (req, res) => {
@@ -74,6 +75,16 @@ const lendBook = async (req, res) => {};
 
 const returnBook = async (req, res) => {};
 
-const userInfo = async (req, res) => {};
+const userInfo = async (req, res) => {
+  const result = await model.getUser(req.user.email);
+  const info = {
+    id: result.id,
+    username: result.username,
+    email: result.email,
+  };
+  console.log(info);
+  res.statusMessage = "GET request for user succeeded";
+  res.status(200).json(info);
+};
 
 module.exports = { register, login, lendBook, returnBook, userInfo };
