@@ -103,7 +103,7 @@ const lendBook = async (req, res) => {
     }
   } else {
     res.statusMessage =
-      "POST request to login a user failed, something wrong with the data sent";
+      "POST request to loan book failed, something wrong with the data sent";
     res.status(400).end();
   }
 };
