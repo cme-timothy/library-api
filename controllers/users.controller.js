@@ -141,12 +141,15 @@ const returnBook = async (req, res) => {
 
 const userInfo = async (req, res) => {
   const result = await model.getUser(req.user.email);
-  const info = {
-    id: result.id,
-    username: result.username,
-    email: result.email,
-  };
-  console.log(info);
+  const allBooksLoaned = await model.getLoanedBooks(req.user.email);
+  const info = [
+    {
+      id: result.id,
+      username: result.username,
+      email: result.email,
+      booksLoaned: allBooksLoaned,
+    },
+  ];
   res.statusMessage = "GET request for user succeeded";
   res.status(200).json(info);
 };

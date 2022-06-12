@@ -44,7 +44,8 @@ function lendBook(email, bookId, title, author) {
 }
 
 function getLoanedBooks(email) {
-  const sql = "SELECT * FROM lentOut WHERE email = ?";
+  const sql =
+    "SELECT DISTINCT bookId, title, author FROM lentOut WHERE email = ?";
 
   return new Promise((resolve, reject) => {
     db.all(sql, email, (error, rows) => {
