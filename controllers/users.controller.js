@@ -82,9 +82,24 @@ const lendBook = async (req, res) => {
         "POST request to loan book failed, the server can not find the book";
       res.status(404).end();
     } else {
-      await model.lend(req.user.email, req.body.id);
-      res.statusMessage = "POST request to loan book succeeded";
-      res.status(200).end();
+      const allBooksLoaned = await model.getLoanedBooks(req.user.email);
+      const booklAreadyLoaned = allBooksLoaned.find(
+        (book) => book.bookId === req.body.id
+      );
+      if (booklAreadyLoaned) {
+        res.statusMessage =
+          "POST request to loan book failed, the book already loaned";
+        res.status(409).end();
+      } else {
+        await model.lend(
+          req.user.email,
+          req.body.id,
+          foundBook.title,
+          foundBook.author
+        );
+        res.statusMessage = "POST request to loan book succeeded";
+        res.status(200).end();
+      }
     }
   } else {
     res.statusMessage =

@@ -28,11 +28,12 @@ function getUser(email) {
   });
 }
 
-function lend(email, bookId) {
-  const sql = "INSERT INTO lentOut (email, bookId) VALUES (?, ?)";
+function lend(email, bookId, title, author) {
+  const sql =
+    "INSERT INTO lentOut (email, bookId, title, author) VALUES (?, ?, ?, ?)";
 
   return new Promise((resolve, reject) => {
-    db.run(sql, [email, bookId], (error) => {
+    db.run(sql, [email, bookId, title, author], (error) => {
       if (error) {
         console.error(error.message);
         reject(error);
@@ -42,4 +43,18 @@ function lend(email, bookId) {
   });
 }
 
-module.exports = { registerUser, getUser, lend };
+function getLoanedBooks(email) {
+  const sql = "SELECT * FROM lentOut WHERE email = ?";
+
+  return new Promise((resolve, reject) => {
+    db.all(sql, email, (error, rows) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve(rows);
+    });
+  });
+}
+
+module.exports = { registerUser, getUser, lend, getLoanedBooks };

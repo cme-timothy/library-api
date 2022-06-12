@@ -17,7 +17,9 @@ const db = new sqlite3.Database("db.sqlite", (error) => {
     CREATE TABLE lentOut (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT,
-        bookId INTEGER
+        bookId INTEGER,
+        title TEXT,
+        author TEXT
     )
     `;
   const usersStmt = `
