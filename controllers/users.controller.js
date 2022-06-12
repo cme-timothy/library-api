@@ -81,6 +81,10 @@ const lendBook = async (req, res) => {
       res.statusMessage =
         "POST request to loan book failed, the server can not find the book";
       res.status(404).end();
+    } else if (foundBook.quantity === 0) {
+      res.statusMessage =
+        "POST request to loan book failed, no books left to loan";
+      res.status(409).end();
     } else {
       const allBooksLoaned = await model.getLoanedBooks(req.user.email);
       const booklAreadyLoaned = allBooksLoaned.find(
@@ -97,6 +101,8 @@ const lendBook = async (req, res) => {
           foundBook.title,
           foundBook.author
         );
+        const quantityDown = foundBook.quantity - 1;
+        await modelBooks.changeQuantity(quantityDown, req.body.id);
         res.statusMessage = "POST request to loan book succeeded";
         res.status(200).end();
       }
@@ -128,6 +134,8 @@ const returnBook = async (req, res) => {
         res.status(404).end();
       } else {
         await model.returnBook(req.user.email, req.body.id);
+        const quantityUp = foundBook.quantity + 1;
+        await modelBooks.changeQuantity(quantityUp, req.body.id);
         res.statusMessage = "POST request to return book succeeded";
         res.status(200).end();
       }
