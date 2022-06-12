@@ -22,17 +22,24 @@ const getOneBook = async (req, res) => {
 const addBook = async (req, res) => {
   const title = typeof req.body.title;
   const author = typeof req.body.author;
-  const summary = typeof req.body.summary;
+  const about = typeof req.body.about;
+  const quantity = typeof req.body.quantity;
   const objectLength = Object.keys(req.body).length;
   if (
     title === "string" &&
     author === "string" &&
-    summary === "string" &&
-    objectLength === 3
+    about === "string" &&
+    quantity === "number" &&
+    objectLength === 4
   ) {
     const foundbook = await model.alreadyExists(req.body.title);
     if (!foundbook) {
-      await model.add(req.body.title, req.body.author, req.body.summary);
+      await model.add(
+        req.body.title,
+        req.body.author,
+        req.body.about,
+        req.body.quantity
+      );
       res.statusMessage =
         "POST request for book succeeded, and is added to the server";
       res.status(201).end();
@@ -51,7 +58,8 @@ const addBook = async (req, res) => {
 const changeBook = async (req, res) => {
   const title = typeof req.body.title;
   const author = typeof req.body.author;
-  const summary = typeof req.body.summary;
+  const about = typeof req.body.about;
+  const quantity = typeof req.body.quantity;
   const objectLength = Object.keys(req.body).length;
   const items = req.url.split("/");
   const foundBook = await model.getOne(items[2]);
@@ -59,13 +67,15 @@ const changeBook = async (req, res) => {
     foundBook &&
     title === "string" &&
     author === "string" &&
-    summary === "string" &&
-    objectLength === 3
+    about === "string" &&
+    quantity === "number" &&
+    objectLength === 4
   ) {
     await model.changeAllValues(
       req.body.title,
       req.body.author,
-      req.body.summary,
+      req.body.about,
+      req.body.quantity,
       items[2]
     );
     res.statusMessage =
@@ -82,13 +92,13 @@ const changeBook = async (req, res) => {
   }
 };
 
-const changeBookSummary = async (req, res) => {
-  const summary = typeof req.body.summary;
+const changeBookQuantity = async (req, res) => {
+  const quantity = typeof req.body.quantity;
   const objectLength = Object.keys(req.body).length;
   const items = req.url.split("/");
   const foundBook = await model.getOne(items[2]);
-  if (foundBook && summary === "string" && objectLength === 1) {
-    await model.changeSummary(req.body.summary, items[2]);
+  if (foundBook && quantity === "number" && objectLength === 1) {
+    await model.changeQuantity(req.body.quantity, items[2]);
     res.statusMessage =
       "PATCH request for book succeeded, and is updated on the server";
     res.status(204).end();
@@ -123,6 +133,6 @@ module.exports = {
   getOneBook,
   addBook,
   changeBook,
-  changeBookSummary,
+  changeBookQuantity,
   deleteBook,
 };

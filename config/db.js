@@ -10,7 +10,8 @@ const db = new sqlite3.Database("db.sqlite", (error) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         author TEXT,
-        summary TEXT
+        about TEXT,
+        quantity INTEGER
     )
     `;
   const lentOutStmt = `

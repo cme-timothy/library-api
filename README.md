@@ -39,13 +39,15 @@ Output example:
         id: 'unique identifier',
         title: 'book name',
         author: 'authors name'
-        summary: 'brief summary'
+        about: 'brief summary'
+        quantity: 'number'
     },
     {
         id: 'unique identifier',
         title: 'book name',
         author: 'authors name'
-        summary: 'brief summary'
+        about: 'brief summary'
+        quantity: 'number'
     }
 ]
 ```
@@ -66,7 +68,8 @@ Output example:
         id: 'unique identifier',
         title: 'book name',
         author: 'authors name'
-        summary: 'brief summary'
+        about: 'brief summary'
+        quantity: 'number'
     }
 ]
 ```
@@ -80,7 +83,8 @@ fetch('http://localhost:4000/books',{
                 {
                     title: 'book name',
                     author: 'authors name'
-                    summary: 'brief summary'
+                    about: 'brief summary'
+                    quantity: 'number'
                 }
             )
         })
@@ -97,7 +101,8 @@ fetch('http://localhost:4000/books/:id',{
                 {
                     title: 'book name',
                     author: 'authors name'
-                    summary: 'brief summary'
+                    about: 'brief summary'
+                    quantity: 'number'
                 }
             )
         })
@@ -105,14 +110,14 @@ fetch('http://localhost:4000/books/:id',{
 
 If request succeded then you will recieve status code 204 with the following message: PUT request for book succeeded, and is updated on the server
 
-## Change only book summary
+## Change only book quantity
 
 ```
 fetch('http://localhost:4000/books/:id',{
             method:"PATCH",
             body:JSON.stringify(
                 {
-                    summary: 'brief summary'
+                    quantity: 'number'
                 }
             )
         })

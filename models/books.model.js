@@ -42,11 +42,11 @@ function alreadyExists(title) {
   });
 }
 
-function add(title, author, summary) {
-  const sql = "INSERT INTO library (title, author, summary) VALUES (?, ?, ?)";
+function add(title, author, about, quantity) {
+  const sql = "INSERT INTO library (title, author, about, quantity) VALUES (?, ?, ?, ?)";
 
   return new Promise((resolve, reject) => {
-    db.run(sql, [title, author, summary], (error) => {
+    db.run(sql, [title, author, about, quantity], (error) => {
       if (error) {
         console.error(error.message);
         reject(error);
@@ -56,12 +56,12 @@ function add(title, author, summary) {
   });
 }
 
-function changeAllValues(title, author, summary, id) {
+function changeAllValues(title, author, about, quantity, id) {
   const sql =
-    "UPDATE library SET title = ?, author = ?, summary = ? WHERE id = ?";
+    "UPDATE library SET title = ?, author = ?, about = ?, quantity = ? WHERE id = ?";
 
   return new Promise((resolve, reject) => {
-    db.run(sql, title, author, summary, id, (error) => {
+    db.run(sql, title, author, about, quantity, id, (error) => {
       if (error) {
         console.error(error.message);
         reject(error);
@@ -71,11 +71,11 @@ function changeAllValues(title, author, summary, id) {
   });
 }
 
-function changeSummary(summary, id) {
-  const sql = "UPDATE library SET summary = ? WHERE id = ?";
+function changeQuantity(quantity, id) {
+  const sql = "UPDATE library SET quantity = ? WHERE id = ?";
 
   return new Promise((resolve, reject) => {
-    db.run(sql, summary, id, (error) => {
+    db.run(sql, quantity, id, (error) => {
       if (error) {
         console.error(error.message);
         reject(error);
@@ -105,6 +105,6 @@ module.exports = {
   alreadyExists,
   add,
   changeAllValues,
-  changeSummary,
+  changeQuantity,
   deleteOne,
 };
