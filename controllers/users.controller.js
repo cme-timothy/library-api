@@ -91,7 +91,7 @@ const lendBook = async (req, res) => {
           "POST request to loan book failed, the book already loaned";
         res.status(409).end();
       } else {
-        await model.lend(
+        await model.lendBook(
           req.user.email,
           req.body.id,
           foundBook.title,
@@ -108,7 +108,36 @@ const lendBook = async (req, res) => {
   }
 };
 
-const returnBook = async (req, res) => {};
+const returnBook = async (req, res) => {
+  const id = typeof req.body.id;
+  const objectLength = Object.keys(req.body).length;
+  if (id === "number" && objectLength === 1) {
+    const foundBook = await modelBooks.getOne(req.body.id);
+    if (!foundBook) {
+      res.statusMessage =
+        "POST request to return book failed, the server can not find the book";
+      res.status(404).end();
+    } else {
+      const allBooksLoaned = await model.getLoanedBooks(req.user.email);
+      const booklAreadyLoaned = allBooksLoaned.find(
+        (book) => book.bookId === req.body.id
+      );
+      if (!booklAreadyLoaned) {
+        res.statusMessage =
+          "POST request to return book failed, the book not loaned";
+        res.status(404).end();
+      } else {
+        await model.returnBook(req.user.email, req.body.id);
+        res.statusMessage = "POST request to return book succeeded";
+        res.status(200).end();
+      }
+    }
+  } else {
+    res.statusMessage =
+      "POST request to return book failed, something wrong with the data sent";
+    res.status(400).end();
+  }
+};
 
 const userInfo = async (req, res) => {
   const result = await model.getUser(req.user.email);

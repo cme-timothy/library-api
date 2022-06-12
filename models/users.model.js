@@ -28,7 +28,7 @@ function getUser(email) {
   });
 }
 
-function lend(email, bookId, title, author) {
+function lendBook(email, bookId, title, author) {
   const sql =
     "INSERT INTO lentOut (email, bookId, title, author) VALUES (?, ?, ?, ?)";
 
@@ -57,4 +57,24 @@ function getLoanedBooks(email) {
   });
 }
 
-module.exports = { registerUser, getUser, lend, getLoanedBooks };
+function returnBook(email, bookId) {
+  const sql = "DELETE FROM lentOut WHERE email = ? AND bookID = ?";
+
+  return new Promise((resolve, reject) => {
+    db.run(sql, email, bookId, (error) => {
+      if (error) {
+        console.error(error.message);
+        reject(error);
+      }
+      resolve();
+    });
+  });
+}
+
+module.exports = {
+  registerUser,
+  getUser,
+  lendBook,
+  getLoanedBooks,
+  returnBook,
+};
