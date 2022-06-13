@@ -18,8 +18,18 @@ node index.js
 
 # API route list
 
+## Library router
+
 - http://localhost:4000/books
 - http://localhost:4000/books/:id
+
+## Users router
+
+- http://localhost:4000/auth/register
+- http://localhost:4000/auth/login
+- http://localhost:4000/users/lend
+- http://localhost:4000/users/return
+- http://localhost:4000/me
 
 # Klient side request examples
 
@@ -38,15 +48,15 @@ Output example:
     {
         id: 'unique identifier',
         title: 'book name',
-        author: 'authors name'
-        about: 'brief summary'
+        author: 'authors name',
+        about: 'brief summary',
         quantity: 'number'
     },
     {
         id: 'unique identifier',
         title: 'book name',
-        author: 'authors name'
-        about: 'brief summary'
+        author: 'authors name',
+        about: 'brief summary',
         quantity: 'number'
     }
 ]
@@ -67,8 +77,8 @@ Output example:
     {
         id: 'unique identifier',
         title: 'book name',
-        author: 'authors name'
-        about: 'brief summary'
+        author: 'authors name',
+        about: 'brief summary',
         quantity: 'number'
     }
 ]
@@ -82,8 +92,8 @@ fetch('http://localhost:4000/books',{
             body:JSON.stringify(
                 {
                     title: 'book name',
-                    author: 'authors name'
-                    about: 'brief summary'
+                    author: 'authors name',
+                    about: 'brief summary',
                     quantity: 'number'
                 }
             )
@@ -100,8 +110,8 @@ fetch('http://localhost:4000/books/:id',{
             body:JSON.stringify(
                 {
                     title: 'book name',
-                    author: 'authors name'
-                    about: 'brief summary'
+                    author: 'authors name',
+                    about: 'brief summary',
                     quantity: 'number'
                 }
             )
@@ -134,3 +144,108 @@ fetch('http://localhost:4000/books/:id',{
 ```
 
 If request succeded then you will recieve status code 204 with status message: DELETE request for book succeeded, and is deleted from the server
+
+## Register
+
+```
+fetch('http://localhost:4000/auth/register',{
+            method:"POST",
+            body:JSON.stringify(
+                {
+	                username: 'newuser',
+	                email: 'newuser@something.something',
+	                password: 'secretpassword'
+                }
+            )
+        })
+```
+
+If request succeded then you will recieve status code 201 with the following message: POST request to register a user succeeded, and is added to the server
+
+## Login
+
+```
+fetch('http://localhost:4000/auth/login',{
+            method:"POST",
+            body:JSON.stringify(
+                {
+	                email: 'newuser@something.something',
+	                password: 'secretpassword'
+                }
+            )
+        })
+```
+
+If request succeded then you will recieve a token
+
+Output example:
+
+```
+"token //my token appears here"
+```
+
+## Lend a book
+
+```
+fetch('http://localhost:4000/users/lend',{
+            method:"POST",
+            headers: {
+            authorization: "bearer //my token goes here"
+            },
+            body:JSON.stringify(
+                {
+	                "id": 'unique identifier',
+                }
+            )
+        })
+```
+
+If request succeded then you will recieve status code 200 with the following message: POST request to loan book succeeded
+
+## Return a book
+
+```
+fetch('http://localhost:4000/users/return',{
+            method:"POST",
+            headers: {
+            authorization: "bearer //my token goes here"
+            },
+            body:JSON.stringify(
+                {
+	                "id": 'unique identifier',
+                }
+            )
+        })
+```
+
+If request succeded then you will recieve status code 200 with the following message: POST request to return book succeeded
+
+## Get user info
+
+```
+fetch('http://localhost:4000/me')
+            headers: {
+            authorization: "bearer //my token goes here"
+            },
+            .then(res=>res.json())
+            .then(json=>console.log(json))
+```
+
+Output example:
+
+```
+[
+    {
+        id: 'unique identifier',
+        username: 'newuser',
+        email: 'newuser@something.something',
+        booksLoaned: [
+            {
+                bookId: 'unique identifier',
+                title: 'book name',
+                author: 'authors name'
+            }
+        ]
+    }
+]
+```
