@@ -9,9 +9,6 @@
 # production
 /build
 
-# database
-db.sqlite
-
 # log files
 response.log
 
